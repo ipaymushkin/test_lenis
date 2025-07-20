@@ -210,14 +210,15 @@
         const headerHeight = header.offsetHeight
         const footerTop = document.getElementById('footer').offsetTop
         const currentPosition = scroll - headerHeight
+        const threshold = slideHeight * 0.5
 
 
         // Check if we're in slider section
-        isInSlider = scroll >= headerHeight && scroll <= footerTop - slideHeight
-        console.log(lastIsInSlider, isInSlider)
+
+        isInSlider = scroll >= headerHeight - threshold && scroll <= footerTop - slideHeight + threshold
         if (!lastIsInSlider && isInSlider) {
-            // snapToSlide(0)
-            // updateActiveSlide();
+            snapToSlide(scrollDirection > 0 ? 0 : slides.length - 1)
+            updateActiveSlide();
             isScrolling = true;
             setTimeout(() => {
                 isScrolling = false
@@ -228,7 +229,6 @@
         if (isScrolling) return
 
         if (isInSlider) {
-            const threshold = slideHeight * 0.4
             let targetSlide = currentSlide
 
             if (scrollDirection > 0) {
@@ -255,6 +255,9 @@
             }
             updateActiveSlide()
         } else {
+            slides.forEach((slide, index) => {
+                slide.classList.remove('active')
+            })
             if (sliderSection.getBoundingClientRect().bottom < window.innerHeight) {
                 isBottomOfSlider = true;
             }
@@ -280,7 +283,6 @@
 
     // Update active slide
     function updateActiveSlide() {
-        console.log('????')
 
         // const headerHeight = header.offsetHeight
         // const currentScroll = lenis.scroll
