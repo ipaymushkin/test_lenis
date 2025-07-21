@@ -100,6 +100,17 @@
         /*    font-size: 1.2rem;*/
         /*    line-height: 1.6;*/
         /*}*/
+
+        .buttonWrapper {
+
+            position: fixed;
+            top: 0;
+            left: 0;
+        }
+
+        .button-test {
+            padding: 20px;
+        }
     </style>
 </head>
 <body>
@@ -107,6 +118,13 @@
     <div>
         <h1>Perfect Touch Scroll</h1>
         <p>Now with proper touch support everywhere</p>
+    </div>
+    <div class="buttonWrapper">
+    <button class="button-test">1</button>
+    <button class="button-test">2</button>
+    <button class="button-test">3</button>
+    <button class="button-test">4</button>
+    <button class="button-test">5</button>
     </div>
 </div>
 
@@ -161,6 +179,7 @@
         // smoothTouch: true,
         // touchMultiplier: 2,
     })
+
 
     // Snap functionality
     const sliderSection = document.getElementById('slider-section')
@@ -280,6 +299,12 @@
             }
         })
     }
+
+    document.querySelectorAll('.button-test').forEach((elem, idx) => {
+        elem.addEventListener('click', (e) => {
+            snapToSlide(idx)
+        })
+    })
 
     // Update active slide
     function updateActiveSlide() {
