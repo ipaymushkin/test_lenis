@@ -269,9 +269,9 @@
 
     // Snap to slide function
     function snapToSlide(targetSlide) {
-        console.log('targetSlide', targetSlide, 'currentSlide', currentSlide, 'slidePositions[currentSlide]', slidePositions[currentSlide], 'slidePositions', slidePositions)
         isScrolling = true
         currentSlide = targetSlide
+        console.log('currentSlide', currentSlide, 'slidePositions[currentSlide]', slidePositions[currentSlide], 'slidePositions', slidePositions)
         lenis.scrollTo(slidePositions[currentSlide], {
             duration,
             easing: (t) => t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2,
