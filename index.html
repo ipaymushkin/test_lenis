@@ -20,7 +20,8 @@
 
         /* Header section */
         .header {
-            height: 2000px;
+            /*height: 2000px;*/
+            height: 200dvh;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             display: flex;
             justify-content: center;
@@ -36,7 +37,8 @@
         .slide {
             position: sticky;
             top: 0;
-            height: 1000px;
+            /*height: 1000px;*/
+            height: 100dvh;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -82,7 +84,8 @@
 
         /* Footer section */
         .footer {
-            height: 2000px;
+            /*height: 2000px;*/
+            height: 200dvh;
             background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
             color: #333;
             display: flex;
@@ -182,203 +185,206 @@
 
 <script src="https://unpkg.com/lenis@1.3.7/dist/lenis.min.js"></script>
 <script>
-    // Initialize Lenis
-    const lenis = new Lenis({
-        duration: 1.2,
-        easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-        smooth: true,
-        direction: 'vertical',
-        smoothTouch: true,
-        touchMultiplier: 2,
-    })
+    setTimeout(() => {
 
-
-    // Snap functionality
-    const sliderSection = document.getElementById('slider-section')
-    const slides = document.querySelectorAll('.slide')
-    const slideHeight = 1000;// screen.height // window.innerHeight
-    let currentSlide = 0
-    let isScrolling = false
-    let scrollDirection = 0
-    let lastScroll = 0
-    let isBottomOfSlider = false;
-    const duration = 1.5
-
-    // Touch variables
-    let touchStartY = 0
-    let isInSlider = false
-    let lastIsInSlider = false
-
-    // Calculate slide positions
-    const calculateSlidePositions = () => {
-        const headerHeight = sliderSection.offsetTop
-        return Array.from(slides).map((_, index) => {
-            return headerHeight + (index * slideHeight)
+        // Initialize Lenis
+        const lenis = new Lenis({
+            duration: 1.2,
+            easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+            smooth: true,
+            direction: 'vertical',
+            smoothTouch: true,
+            touchMultiplier: 2,
         })
-    }
-
-    let slidePositions = calculateSlidePositions()
 
 
-    // Handle resize
-    window.addEventListener('resize', () => {
-        slidePositions = calculateSlidePositions()
-    })
+        // Snap functionality
+        const sliderSection = document.getElementById('slider-section')
+        const slides = document.querySelectorAll('.slide')
+        const slideHeight = 1000;// screen.height // window.innerHeight
+        let currentSlide = 0
+        let isScrolling = false
+        let scrollDirection = 0
+        let lastScroll = 0
+        let isBottomOfSlider = false;
+        const duration = 1.5
 
-    // RAF loop
-    function raf(time) {
-        lenis.raf(time)
-        requestAnimationFrame(raf)
-    }
+        // Touch variables
+        let touchStartY = 0
+        let isInSlider = false
+        let lastIsInSlider = false
 
-    requestAnimationFrame(raf)
-
-    // Main scroll handler
-    lenis.on('scroll', ({scroll, velocity}) => {
-        if (isScrolling) return
-        scrollDirection = scroll > lastScroll ? 1 : -1
-        lastScroll = scroll
-
-        const headerHeight = header.offsetHeight
-        const footerTop = document.getElementById('footer').offsetTop
-        const currentPosition = scroll - headerHeight
-        const threshold = slideHeight * 0.01
-
-
-        // Check if we're in slider section
-
-        isInSlider = scroll >= headerHeight - threshold && scroll <= footerTop - slideHeight + threshold
-        if (!lastIsInSlider && isInSlider) {
-            snapToSlide(scrollDirection > 0 ? 0 : slides.length - 1)
-            updateActiveSlide();
-            isScrolling = true;
-            setTimeout(() => {
-                isScrolling = false
-            }, duration * 1000)
+        // Calculate slide positions
+        const calculateSlidePositions = () => {
+            const headerHeight = sliderSection.offsetTop
+            return Array.from(slides).map((_, index) => {
+                return headerHeight + (index * slideHeight)
+            })
         }
-        lastIsInSlider = isInSlider;
+
+        let slidePositions = calculateSlidePositions()
 
 
-        if (isInSlider) {
-            let targetSlide = currentSlide
+        // Handle resize
+        window.addEventListener('resize', () => {
+            slidePositions = calculateSlidePositions()
+        })
 
-            if (scrollDirection > 0) {
-                if (currentPosition > slidePositions[currentSlide] - headerHeight + threshold &&
-                    currentSlide < slides.length - 1) {
+        // RAF loop
+        function raf(time) {
+            lenis.raf(time)
+            requestAnimationFrame(raf)
+        }
 
-                    targetSlide = currentSlide + 1
-                }
-            } else if (scrollDirection < 0) {
-                if (currentPosition < slidePositions[currentSlide] - headerHeight - threshold &&
-                    currentSlide > 0) {
-                    if (isBottomOfSlider) {
-                        targetSlide = currentSlide;
-                        isBottomOfSlider = false;
-                    } else {
-                        targetSlide = currentSlide - 1
+        requestAnimationFrame(raf)
+
+        // Main scroll handler
+        lenis.on('scroll', ({scroll, velocity}) => {
+            if (isScrolling) return
+            scrollDirection = scroll > lastScroll ? 1 : -1
+            lastScroll = scroll
+
+            const headerHeight = header.offsetHeight
+            const footerTop = document.getElementById('footer').offsetTop
+            const currentPosition = scroll - headerHeight
+            const threshold = slideHeight * 0.01
+
+
+            // Check if we're in slider section
+
+            isInSlider = scroll >= headerHeight - threshold && scroll <= footerTop - slideHeight + threshold
+            if (!lastIsInSlider && isInSlider) {
+                snapToSlide(scrollDirection > 0 ? 0 : slides.length - 1)
+                updateActiveSlide();
+                isScrolling = true;
+                setTimeout(() => {
+                    isScrolling = false
+                }, duration * 1000)
+            }
+            lastIsInSlider = isInSlider;
+
+
+            if (isInSlider) {
+                let targetSlide = currentSlide
+
+                if (scrollDirection > 0) {
+                    if (currentPosition > slidePositions[currentSlide] - headerHeight + threshold &&
+                        currentSlide < slides.length - 1) {
+
+                        targetSlide = currentSlide + 1
+                    }
+                } else if (scrollDirection < 0) {
+                    if (currentPosition < slidePositions[currentSlide] - headerHeight - threshold &&
+                        currentSlide > 0) {
+                        if (isBottomOfSlider) {
+                            targetSlide = currentSlide;
+                            isBottomOfSlider = false;
+                        } else {
+                            targetSlide = currentSlide - 1
+                        }
                     }
                 }
+
+                // console.log(targetSlide, currentSlide)
+                if (targetSlide !== currentSlide) {
+                    snapToSlide(targetSlide)
+                }
+                updateActiveSlide()
+            } else {
+                slides.forEach((slide, index) => {
+                    slide.classList.remove('active')
+                })
+                // if (sliderSection.getBoundingClientRect().bottom < slideHeight) {
+                //     isBottomOfSlider = true;
+                // }
             }
 
-            // console.log(targetSlide, currentSlide)
-            if (targetSlide !== currentSlide) {
-                snapToSlide(targetSlide)
+        })
+
+        // Snap to slide function
+        function snapToSlide(targetSlide) {
+            isScrolling = true
+            currentSlide = targetSlide
+            lenis.scrollTo(slidePositions[currentSlide], {
+                duration,
+                easing: (t) => t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2,
+                lock: true,
+                onComplete: () => {
+                    isScrolling = false
+                }
+            })
+        }
+
+        document.querySelectorAll('.button-test').forEach((elem, idx) => {
+            elem.addEventListener('click', (e) => {
+                snapToSlide(idx)
+            })
+        })
+
+        // Update active slide
+        function updateActiveSlide() {
+
+            // const headerHeight = header.offsetHeight
+            // const currentScroll = lenis.scroll
+            //
+            // // Find which slide is currently most visible
+            // let closestSlide = 0
+            // let minDistance = Infinity
+            //
+            // slidePositions.forEach((pos, index) => {
+            //     const distance = Math.abs(currentScroll - pos)
+            //     if (distance < minDistance) {
+            //         minDistance = distance
+            //         closestSlide = index
+            //     }
+            // })
+
+            // slides.forEach((slide, index) => {
+            //     if (index === closestSlide) {
+            //         slide.classList.add('active')
+            //     } else {
+            //         slide.classList.remove('active')
+            //     }
+            // })
+
+            slides.forEach((slide, index) => {
+                if (index === currentSlide) {
+                    slide.classList.add('active')
+                } else {
+                    slide.classList.remove('active')
+                }
+            })
+        }
+
+        // Touch event handlers - now passive outside slider
+        window.addEventListener('touchstart', (e) => {
+            touchStartY = e.touches[0].clientY
+        }, {passive: true})
+
+        window.addEventListener('touchend', (e) => {
+            if (!isInSlider || isScrolling) return
+
+            const touchEndY = e.changedTouches[0].clientY
+            const deltaY = touchEndY - touchStartY
+
+
+            // Only handle significant swipes
+            if (Math.abs(deltaY) > 50) {
+                if (deltaY > 0 && currentSlide > 0) {
+                    snapToSlide(currentSlide - 1)
+                } else if (deltaY < 0 && currentSlide < slides.length - 1) {
+                    snapToSlide(currentSlide + 1)
+                }
             }
             updateActiveSlide()
-        } else {
-            slides.forEach((slide, index) => {
-                slide.classList.remove('active')
-            })
-            // if (sliderSection.getBoundingClientRect().bottom < slideHeight) {
-            //     isBottomOfSlider = true;
-            // }
-        }
+        }, {passive: true})
 
-    })
-
-    // Snap to slide function
-    function snapToSlide(targetSlide) {
-        isScrolling = true
-        currentSlide = targetSlide
-        lenis.scrollTo(slidePositions[currentSlide], {
-            duration,
-            easing: (t) => t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2,
-            lock: true,
-            onComplete: () => {
-                isScrolling = false
-            }
+        // Initialize
+        window.addEventListener('load', () => {
+            slidePositions = calculateSlidePositions()
+            // updateActiveSlide()
         })
-    }
-
-    document.querySelectorAll('.button-test').forEach((elem, idx) => {
-        elem.addEventListener('click', (e) => {
-            snapToSlide(idx)
-        })
-    })
-
-    // Update active slide
-    function updateActiveSlide() {
-
-        // const headerHeight = header.offsetHeight
-        // const currentScroll = lenis.scroll
-        //
-        // // Find which slide is currently most visible
-        // let closestSlide = 0
-        // let minDistance = Infinity
-        //
-        // slidePositions.forEach((pos, index) => {
-        //     const distance = Math.abs(currentScroll - pos)
-        //     if (distance < minDistance) {
-        //         minDistance = distance
-        //         closestSlide = index
-        //     }
-        // })
-
-        // slides.forEach((slide, index) => {
-        //     if (index === closestSlide) {
-        //         slide.classList.add('active')
-        //     } else {
-        //         slide.classList.remove('active')
-        //     }
-        // })
-
-        slides.forEach((slide, index) => {
-            if (index === currentSlide) {
-                slide.classList.add('active')
-            } else {
-                slide.classList.remove('active')
-            }
-        })
-    }
-
-    // Touch event handlers - now passive outside slider
-    window.addEventListener('touchstart', (e) => {
-        touchStartY = e.touches[0].clientY
-    }, {passive: true})
-
-    window.addEventListener('touchend', (e) => {
-        if (!isInSlider || isScrolling) return
-
-        const touchEndY = e.changedTouches[0].clientY
-        const deltaY = touchEndY - touchStartY
-
-
-        // Only handle significant swipes
-        if (Math.abs(deltaY) > 50) {
-            if (deltaY > 0 && currentSlide > 0) {
-                snapToSlide(currentSlide - 1)
-            } else if (deltaY < 0 && currentSlide < slides.length - 1) {
-                snapToSlide(currentSlide + 1)
-            }
-        }
-        updateActiveSlide()
-    }, {passive: true})
-
-    // Initialize
-    window.addEventListener('load', () => {
-        slidePositions = calculateSlidePositions()
-        // updateActiveSlide()
-    })
+    }, 2000)
 </script>
 </body>
 </html>
