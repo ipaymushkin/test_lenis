@@ -190,8 +190,6 @@
 
     let slidePositions = calculateSlidePositions()
 
-    alert(slidePositions.join(', '))
-
     // Handle resize
     window.addEventListener('resize', () => {
         slidePositions = calculateSlidePositions()
@@ -213,7 +211,7 @@
         const headerHeight = header.offsetHeight
         const footerTop = document.getElementById('footer').offsetTop
         const currentPosition = scroll - headerHeight
-        const threshold = slideHeight * 0.5
+        const threshold = 0// slideHeight * 0.5
 
 
         // Check if we're in slider section
