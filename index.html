@@ -22,27 +22,27 @@
         .header {
             height: 2000px;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            /*display: flex;*/
-            /*justify-content: center;*/
-            /*align-items: center;*/
+            display: flex;
+            justify-content: center;
+            align-items: center;
             text-align: center;
         }
 
         /* Vertical slider section */
         .slider-section {
-            /*position: relative;*/
+            position: relative;
         }
 
         .slide {
-            /*position: sticky;*/
-            /*top: 0;*/
+            position: sticky;
+            top: 0;
             height: 1000px;
-            /*display: flex;*/
-            /*justify-content: center;*/
-            /*align-items: center;*/
-            /*opacity: 0;*/
-            /*transition: opacity 0.8s ease;*/
-            /*padding: 20px;*/
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            transition: opacity 0.8s ease;
+            padding: 20px;
         }
 
         .slide.active {
@@ -70,14 +70,14 @@
         }
 
         .slide-content {
-            /*max-width: 800px;*/
-            /*text-align: center;*/
-            /*transform: translateY(50px);*/
-            /*transition: transform 0.8s ease;*/
+            max-width: 800px;
+            text-align: center;
+            transform: translateY(50px);
+            transition: transform 0.8s ease;
         }
 
         .slide.active .slide-content {
-            /*transform: translateY(0);*/
+            transform: translateY(0);
         }
 
         /* Footer section */
@@ -85,21 +85,21 @@
             height: 2000px;
             background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
             color: #333;
-            /*display: flex;*/
-            /*justify-content: center;*/
-            /*align-items: center;*/
-            /*text-align: center;*/
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
         }
 
-        /*h1 {*/
-        /*    font-size: 3rem;*/
-        /*    margin-bottom: 1rem;*/
-        /*}*/
+        h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
 
-        /*p {*/
-        /*    font-size: 1.2rem;*/
-        /*    line-height: 1.6;*/
-        /*}*/
+        p {
+            font-size: 1.2rem;
+            line-height: 1.6;
+        }
 
         .buttonWrapper {
 
@@ -185,11 +185,11 @@
     // Initialize Lenis
     const lenis = new Lenis({
         duration: 1.2,
-        // easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+        easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
         smooth: true,
         direction: 'vertical',
-        // smoothTouch: true,
-        // touchMultiplier: 2,
+        smoothTouch: true,
+        touchMultiplier: 2,
     })
 
 
@@ -219,7 +219,6 @@
 
     let slidePositions = calculateSlidePositions()
 
-    console.log(slidePositions)
 
     // Handle resize
     window.addEventListener('resize', () => {
@@ -236,7 +235,6 @@
 
     // Main scroll handler
     lenis.on('scroll', ({scroll, velocity}) => {
-        console.log('scroll', scroll);
         if (isScrolling) return
         scrollDirection = scroll > lastScroll ? 1 : -1
         lastScroll = scroll
@@ -302,10 +300,9 @@
     function snapToSlide(targetSlide) {
         isScrolling = true
         currentSlide = targetSlide
-        console.log('currentSlide', currentSlide, 'slidePositions[currentSlide]', slidePositions[currentSlide], 'slidePositions', slidePositions)
         lenis.scrollTo(slidePositions[currentSlide], {
             duration,
-            // easing: (t) => t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2,
+            easing: (t) => t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2,
             lock: true,
             onComplete: () => {
                 isScrolling = false
@@ -356,12 +353,10 @@
 
     // Touch event handlers - now passive outside slider
     window.addEventListener('touchstart', (e) => {
-        console.log('touchstart event');
         touchStartY = e.touches[0].clientY
     }, {passive: true})
 
     window.addEventListener('touchend', (e) => {
-        console.log('touchend event', 'isInSlider', isInSlider, 'isScrolling', isScrolling);
         if (!isInSlider || isScrolling) return
 
         const touchEndY = e.changedTouches[0].clientY
