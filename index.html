@@ -134,7 +134,7 @@
     </div>
 </div>
 
-<!--<div class="slider-section" id="slider-section">-->
+<div class="slider-section" id="slider-section">
     <div class="slide">
         <div class="slide-content">
             <h1>Slide 1</h1>
@@ -165,7 +165,7 @@
             <p>Perfect behavior everywhere</p>
         </div>
     </div>
-<!--</div>-->
+</div>
 
 <div class="footer" id="footer1">
     <div>
@@ -194,10 +194,10 @@
 
 
     // Snap functionality
-    // const sliderSection = document.getElementById('slider-section')
+    const sliderSection = document.getElementById('slider-section')
     const header = document.getElementById('header')
     const slides = document.querySelectorAll('.slide')
-    const slideHeight = screen.height // window.innerHeight
+    const slideHeight = 1000;// screen.height // window.innerHeight
     let currentSlide = 0
     let isScrolling = false
     let scrollDirection = 0
@@ -212,13 +212,15 @@
 
     // Calculate slide positions
     const calculateSlidePositions = () => {
-        const headerHeight = header.offsetHeight
+        const headerHeight = sliderSection.offsetTop
         return Array.from(slides).map((_, index) => {
             return headerHeight + (index * slideHeight)
         })
     }
 
     let slidePositions = calculateSlidePositions()
+
+    console.log(slidePositions)
 
     // Handle resize
     window.addEventListener('resize', () => {
