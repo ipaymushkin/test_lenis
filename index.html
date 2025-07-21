@@ -73,12 +73,12 @@
         .slide-content {
             max-width: 800px;
             text-align: center;
-            transform: translateY(50px);
+            /*transform: translateY(50px);*/
             transition: transform 0.8s ease;
         }
 
         .slide.active .slide-content {
-            transform: translateY(0);
+            /*transform: translateY(0);*/
         }
 
         /* Footer section */
@@ -205,6 +205,7 @@
 
     // Main scroll handler
     lenis.on('scroll', ({scroll, velocity}) => {
+        console.log('scroll event');
         scrollDirection = scroll > lastScroll ? 1 : -1
         lastScroll = scroll
 
@@ -319,10 +320,12 @@
 
     // Touch event handlers - now passive outside slider
     window.addEventListener('touchstart', (e) => {
+        console.log('touchstart event');
         touchStartY = e.touches[0].clientY
     }, {passive: true})
 
     window.addEventListener('touchend', (e) => {
+        console.log('touchend event', 'isInSlider', isInSlider, 'isScrolling', isScrolling);
         if (!isInSlider || isScrolling) return
 
         const touchEndY = e.changedTouches[0].clientY
