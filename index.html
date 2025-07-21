@@ -190,12 +190,9 @@
 
     let slidePositions = calculateSlidePositions()
 
-    console.log('initial slidePositions', slidePositions);
-
     // Handle resize
     window.addEventListener('resize', () => {
         slidePositions = calculateSlidePositions()
-        console.log('resize slidePositions', slidePositions);
     })
 
     // RAF loop
@@ -272,7 +269,7 @@
 
     // Snap to slide function
     function snapToSlide(targetSlide) {
-        console.log('snapToSlide', targetSlide, slidePositions[currentSlide])
+        console.log('snapToSlide', targetSlide, slidePositions[currentSlide], slidePositions)
         isScrolling = true
         currentSlide = targetSlide
         lenis.scrollTo(slidePositions[currentSlide], {
@@ -326,21 +323,19 @@
     }, {passive: true})
 
     window.addEventListener('touchend', (e) => {
-        console.log('touchend', isInSlider, isScrolling);
         if (!isInSlider || isScrolling) return
 
         const touchEndY = e.changedTouches[0].clientY
         const deltaY = touchEndY - touchStartY
 
-        console.log('touchend inner', deltaY, currentSlide);
 
         // Only handle significant swipes
         if (Math.abs(deltaY) > 50) {
             if (deltaY > 0 && currentSlide > 0) {
-                console.log('touchend if', currentSlide - 1);
+                console.log('touchend if deltaY > 0 && currentSlide > 0 === currentSlide - 1', currentSlide - 1);
                 snapToSlide(currentSlide - 1)
             } else if (deltaY < 0 && currentSlide < slides.length - 1) {
-                console.log('touchend if else', currentSlide + 1);
+                console.log('touchend if else deltaY < 0 && currentSlide < slides.length - 1 === currentSlide + 1', currentSlide + 1);
                 snapToSlide(currentSlide + 1)
             }
         }
@@ -350,7 +345,6 @@
     // Initialize
     window.addEventListener('load', () => {
         slidePositions = calculateSlidePositions()
-        console.log('load slidePositions', slidePositions);
         // updateActiveSlide()
     })
 </script>
