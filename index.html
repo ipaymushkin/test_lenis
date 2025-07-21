@@ -205,8 +205,7 @@
 
     // Main scroll handler
     lenis.on('scroll', ({scroll, velocity}) => {
-        if (!isInSlider || isScrolling) return
-        console.log('scroll event');
+        if (isScrolling) return
         scrollDirection = scroll > lastScroll ? 1 : -1
         lastScroll = scroll
 
@@ -229,7 +228,6 @@
         }
         lastIsInSlider = isInSlider;
 
-        if (isScrolling) return
 
         if (isInSlider) {
             let targetSlide = currentSlide
