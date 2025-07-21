@@ -205,6 +205,7 @@
 
     // Main scroll handler
     lenis.on('scroll', ({scroll, velocity}) => {
+        console.log('scroll', scroll);
         if (isScrolling) return
         scrollDirection = scroll > lastScroll ? 1 : -1
         lastScroll = scroll
