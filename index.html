@@ -127,8 +127,14 @@
     <button class="button-test">5</button>
     </div>
 </div>
+<div class="header" id="header1">
+    <div>
+        <h1>Perfect Touch Scroll</h1>
+        <p>Now with proper touch support everywhere</p>
+    </div>
+</div>
 
-<div class="slider-section" id="slider-section">
+<!--<div class="slider-section" id="slider-section">-->
     <div class="slide">
         <div class="slide-content">
             <h1>Slide 1</h1>
@@ -159,8 +165,14 @@
             <p>Perfect behavior everywhere</p>
         </div>
     </div>
-</div>
+<!--</div>-->
 
+<div class="footer" id="footer1">
+    <div>
+        <h1>All Fixed!</h1>
+        <p>You can now touch scroll everywhere</p>
+    </div>
+</div>
 <div class="footer" id="footer">
     <div>
         <h1>All Fixed!</h1>
@@ -182,7 +194,7 @@
 
 
     // Snap functionality
-    const sliderSection = document.getElementById('slider-section')
+    // const sliderSection = document.getElementById('slider-section')
     const header = document.getElementById('header')
     const slides = document.querySelectorAll('.slide')
     const slideHeight = screen.height // window.innerHeight
@@ -278,9 +290,9 @@
             slides.forEach((slide, index) => {
                 slide.classList.remove('active')
             })
-            if (sliderSection.getBoundingClientRect().bottom < slideHeight) {
-                isBottomOfSlider = true;
-            }
+            // if (sliderSection.getBoundingClientRect().bottom < slideHeight) {
+            //     isBottomOfSlider = true;
+            // }
         }
 
     })
