@@ -156,11 +156,11 @@
     // Initialize Lenis
     const lenis = new Lenis({
         duration: 1.2,
-        easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+        // easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
         smooth: true,
         direction: 'vertical',
-        smoothTouch: true,
-        touchMultiplier: 2,
+        // smoothTouch: true,
+        // touchMultiplier: 2,
     })
 
     // Snap functionality
@@ -275,7 +275,7 @@
         console.log('currentSlide', currentSlide, 'slidePositions[currentSlide]', slidePositions[currentSlide], 'slidePositions', slidePositions)
         lenis.scrollTo(slidePositions[currentSlide], {
             duration,
-            easing: (t) => t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2,
+            // easing: (t) => t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2,
             lock: true,
             onComplete: () => {
                 isScrolling = false
