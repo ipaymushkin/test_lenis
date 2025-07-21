@@ -190,6 +190,8 @@
 
     let slidePositions = calculateSlidePositions()
 
+    alert(slidePositions.join(', '))
+
     // Handle resize
     window.addEventListener('resize', () => {
         slidePositions = calculateSlidePositions()
