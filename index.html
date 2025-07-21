@@ -168,8 +168,6 @@
     const header = document.getElementById('header')
     const slides = document.querySelectorAll('.slide')
     const slideHeight = screen.height // window.innerHeight
-    // const slideHeight1 = screen.height
-    // alert(`${slideHeight} = ${slideHeight1}`);
     let currentSlide = 0
     let isScrolling = false
     let scrollDirection = 0
@@ -260,7 +258,7 @@
             slides.forEach((slide, index) => {
                 slide.classList.remove('active')
             })
-            if (sliderSection.getBoundingClientRect().bottom < window.innerHeight) {
+            if (sliderSection.getBoundingClientRect().bottom < slideHeight) {
                 isBottomOfSlider = true;
             }
             // console.log('here', scroll, sliderSection, sliderSection.getBoundingClientRect())
