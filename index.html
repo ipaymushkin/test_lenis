@@ -253,10 +253,6 @@
             }
             snapToSlide(calculatedSlide);
             updateActiveSlide();
-            isScrolling = true;
-            setTimeout(() => {
-                isScrolling = false
-            }, duration * 1100)
         }
         lastIsInSlider = isInSlider;
 
@@ -360,6 +356,7 @@
     }, {passive: true})
 
     window.addEventListener('touchend', (e) => {
+        console.log('????', isScrolling)
         if (!isInSlider || isScrolling) return
 
         const touchEndY = e.changedTouches[0].clientY
