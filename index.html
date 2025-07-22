@@ -312,11 +312,11 @@
         })
     }
 
-    document.querySelectorAll('.button-test').forEach((elem, idx) => {
-        elem.addEventListener('click', (e) => {
-            snapToSlide(idx)
-        })
-    })
+    // document.querySelectorAll('.button-test').forEach((elem, idx) => {
+    //     elem.addEventListener('click', (e) => {
+    //         snapToSlide(idx)
+    //     })
+    // })
 
     // Update active slide
     function updateActiveSlide() {
@@ -355,6 +355,7 @@
 
     // Touch event handlers - now passive outside slider
     window.addEventListener('touchstart', (e) => {
+        if (isScrolling) return
         touchStartY = e.touches[0].clientY
     }, {passive: true})
 
