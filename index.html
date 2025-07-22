@@ -224,16 +224,18 @@
 
     requestAnimationFrame(raf)
 
+
+    const headerHeight = header.offsetHeight
+    const footerTop = document.getElementById('footer').offsetTop
+    const threshold = slideHeight * 0.5
+
     // Main scroll handler
     lenis.on('scroll', ({scroll, velocity}) => {
         if (isScrolling) return
         scrollDirection = scroll > lastScroll ? 1 : -1
         lastScroll = scroll
 
-        const headerHeight = header.offsetHeight
-        const footerTop = document.getElementById('footer').offsetTop
         const currentPosition = scroll - headerHeight
-        const threshold = slideHeight * 0.5
 
 
         // Check if we're in slider section
@@ -254,27 +256,30 @@
             isScrolling = true;
             setTimeout(() => {
                 isScrolling = false
-            }, duration * 1000)
+            }, duration * 1100)
         }
         lastIsInSlider = isInSlider;
 
+        if (isScrolling) return
 
         if (isInSlider) {
             let targetSlide = currentSlide
 
-            console.log('targetSlide', targetSlide, 'currentSlide', currentSlide, 'scrollDirection', scrollDirection, 'currentPosition', currentPosition, 'slidePositions[currentSlide])',
-                slidePositions[currentSlide], 'isBottomOfSlider', isBottomOfSlider)
-
+            // console.log('targetSlide', targetSlide, 'currentSlide', currentSlide, 'scrollDirection', scrollDirection, 'currentPosition', currentPosition, 'slidePositions[currentSlide])',
+            //     slidePositions[currentSlide], 'isBottomOfSlider', isBottomOfSlider)
+            // console.log(scrollDirection, currentSlide)
+            const calculatedThreshold = currentSlide === 0 || currentSlide === slides.length - 1 ? threshold : 0;
             if (scrollDirection > 0) {
-                if (currentPosition > slidePositions[currentSlide] - headerHeight + threshold &&
-                    currentSlide < slides.length - 1) {
-
+                if (
+                    currentSlide === 0 ||
+                    (currentPosition > slidePositions[currentSlide] - headerHeight + calculatedThreshold && currentSlide < slides.length - 1)
+                ) {
                     targetSlide = currentSlide + 1
                 }
             } else if (scrollDirection < 0) {
-                if (currentPosition < slidePositions[currentSlide] - headerHeight - threshold &&
-                    currentSlide > 0) {
-
+                if (
+                    // currentSlide === slides.length - 1 ||
+                    (currentPosition < slidePositions[currentSlide] - headerHeight - calculatedThreshold && currentSlide > 0)) {
                     targetSlide = currentSlide - 1
                 }
             }
