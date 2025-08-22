@@ -112,6 +112,31 @@
         /*.button-test {*/
         /*    padding: 20px;*/
         /*}*/
+
+        html.lenis,
+        html.lenis body {
+            height: auto;
+            width: 100%; max-width: 100% ;
+            scroll-behavior: auto !important;
+        }
+
+        .lenis:not(.lenis-autoToggle).lenis-stopped {
+            overflow: hidden;
+        }
+
+        .lenis.lenis-smooth [data-lenis-prevent] {
+            overscroll-behavior: contain;
+        }
+
+        .lenis.lenis-smooth iframe {
+            pointer-events: none;
+        }
+
+        .lenis.lenis-autoToggle {
+            transition-property: overflow;
+            transition-duration: 1ms;
+            transition-behavior: allow-discrete;
+        }
     </style>
 </head>
 <body>
@@ -168,8 +193,33 @@
     </div>
 </div>
 
-<script src="https://unpkg.com/lenis@1.3.7/dist/lenis.min.js"></script>
+<script src="https://unpkg.com/lenis@1.3.4/dist/lenis.min.js"></script>
 <script>
+
+    function throttle(func, delay) {
+        let inThrottle;
+        let lastFn;
+        let lastTime;
+
+        return function () {
+            const context = this;
+            const args = arguments;
+
+            if (!inThrottle) {
+                func.apply(context, args);
+                lastTime = Date.now();
+                inThrottle = true;
+            } else {
+                clearTimeout(lastFn);
+                lastFn = setTimeout(function () {
+                    if (Date.now() - lastTime >= delay) {
+                        func.apply(context, args);
+                        lastTime = Date.now();
+                    }
+                }, Math.max(delay - (Date.now() - lastTime), 0));
+            }
+        };
+    }
     const slideHeight = screen.height
     const slides = document.querySelectorAll('.slide')
     slides.forEach(slide => slide.style.height = slideHeight + 'px')
@@ -183,6 +233,36 @@
         smoothTouch: true,
         touchMultiplier: 2,
     })
+    /////////////////////////
+    // переход на один слайд вниз
+    function slideScrollDown(slideIndex) {
+        //console.log('sliding scroll', sliding);
+        sliding = true;
+        // lenis.stop();
+        granimInstance.changeState(granimIdx[slideIndex]);
+        dotters.attr('data-before', slideIndex + 1);
+        dottersList.removeClass('active');
+        dottersList.eq(slideIndex).addClass('active');
+        recolorFilterIcon(sliderItem, slideIndex);
+        sliderAnim(slideIndex);
+        sliderItem[slideIndex].classList.add('slide-current');
+        if (slideIndex > 0) {
+            const currentSlide = sliderItem[slideIndex - 1];
+            currentSlide.classList.add('slide-opacity');
+        }
+        if (slideIndex === sliderItem.length - 1) {
+            isSliderUpListen = false;
+            isSliderDownListen = true;
+        } else {
+            isSliderDownListen = false;
+        }
+        //setTimeout(() => {
+        //	console.log('sliding timeout', sliding);
+        //	sliding = false;
+        //    lenis.start();
+        //}, 2000);
+    }
+    /////////////////////////
 
 
     // Snap functionality
@@ -229,10 +309,11 @@
     const footerTop = document.getElementById('footer').offsetTop
     const threshold = slideHeight * 0.5
 
-    // Main scroll handler
-    lenis.on('scroll', ({scroll, velocity}) => {
+    function func({scroll, velocity})  {
+        console.count('scroll');
         if (isScrolling) return
         scrollDirection = scroll > lastScroll ? 1 : -1
+        console.log('scroll, lastScroll', scroll, lastScroll, scrollDirection)
         lastScroll = scroll
 
         const currentPosition = scroll - headerHeight
@@ -292,12 +373,18 @@
             }
         }
 
-    })
+    }
+
+    // const throllerfunc = throttle(func, 50)
+
+    // Main scroll handler
+    lenis.on('scroll', func)
 
     // Snap to slide function
     function snapToSlide(targetSlide) {
         isScrolling = true
         currentSlide = targetSlide
+        console.log('targetSlide', targetSlide);
         lenis.scrollTo(slidePositions[currentSlide], {
             duration,
             easing: (t) => t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2,
@@ -356,7 +443,6 @@
     }, {passive: true})
 
     window.addEventListener('touchend', (e) => {
-        console.log('????', isScrolling)
         if (!isInSlider || isScrolling) return
 
         const touchEndY = e.changedTouches[0].clientY
